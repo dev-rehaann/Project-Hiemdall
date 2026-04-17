@@ -4,9 +4,7 @@ from rich.console import Console as RichConsole
 
 _console = RichConsole()
 
-# ------------------------------------------------------------------ #
-#  UEFI Constants                                                      #
-# ------------------------------------------------------------------ #
+# UEFI Constants
 
 FV_SIGNATURE = b"_FVH"          # Firmware Volume header signature
 FFS_HEADER_SIZE = 24             # Standard FFS file header size in bytes
@@ -41,9 +39,7 @@ SMM_SIGNATURES = [
 ]
 
 
-# ------------------------------------------------------------------ #
-#  Main Parser Class                                                   #
-# ------------------------------------------------------------------ #
+# Main Parser Class
 
 class UEFIParser:
     """
@@ -51,7 +47,7 @@ class UEFIParser:
       - Firmware Volumes (FV)
       - FFS files within each volume
       - DXE drivers
-      - SMM modules (highest privilege — primary rootkit target)
+      - SMM modules (highest privilege - primary rootkit target)
     """
 
     def __init__(self, firmware_blob: bytes):
@@ -61,15 +57,13 @@ class UEFIParser:
         self.volumes   = []   # List of parsed firmware volumes
         self.ffs_files = []   # All FFS files found across all volumes
         self.drivers   = []   # DXE drivers
-        self.smm_modules = [] # SMM modules — the scary ones
+        self.smm_modules = [] # SMM modules - the scary ones
 
-    # ---------------------------------------------------------------- #
-    #  Public API                                                        #
-    # ---------------------------------------------------------------- #
+    # Public API
 
     def parse(self):
         """
-        Full parse pipeline — call this first.
+        Full parse pipeline - call this first.
         Runs volume scan → FFS extraction → driver/SMM classification.
         """
         _console.print("[bold]Starting UEFI firmware parse...[/bold]")
@@ -87,7 +81,7 @@ class UEFIParser:
         return self
 
     def get_summary(self):
-        """Return a plain dict summary — used by other modules and reports"""
+        """Return a plain dict summary - used by other modules and reports"""
         return {
             "firmware_size": self.size,
             "volume_count": len(self.volumes),
@@ -99,9 +93,7 @@ class UEFIParser:
             "smm_modules": [self._driver_summary(d) for d in self.smm_modules],
         }
 
-    # ---------------------------------------------------------------- #
-    #  Step 1 — Scan for Firmware Volumes                               #
-    # ---------------------------------------------------------------- #
+    # Step 1 - Scan for Firmware Volumes
 
     def _scan_firmware_volumes(self):
         """
@@ -172,9 +164,7 @@ class UEFIParser:
         except struct.error:
             return None
 
-    # ---------------------------------------------------------------- #
-    #  Step 2 — Extract FFS Files from each Volume                      #
-    # ---------------------------------------------------------------- #
+    # Step 2 - Extract FFS Files from each Volume
 
     def _extract_ffs_files(self):
         """
@@ -219,7 +209,7 @@ class UEFIParser:
                 # Read GUID (16 bytes) as raw hex string
                 guid_bytes = self.blob[offset:offset + 16]
                 if all(b == 0xFF for b in guid_bytes):
-                    # 0xFF padding — end of used space in this volume
+                    # 0xFF padding - end of used space in this volume
                     break
                 if all(b == 0x00 for b in guid_bytes):
                     offset += 8
@@ -261,9 +251,7 @@ class UEFIParser:
             except (IndexError, struct.error):
                 offset += 8
 
-    # ---------------------------------------------------------------- #
-    #  Step 3 — Classify Drivers and SMM Modules                        #
-    # ---------------------------------------------------------------- #
+    # Step 3 - Classify Drivers and SMM Modules
 
     def _classify_drivers(self):
         """
@@ -289,9 +277,7 @@ class UEFIParser:
         """
         return any(sig in body for sig in SMM_SIGNATURES)
 
-    # ---------------------------------------------------------------- #
-    #  Helpers                                                           #
-    # ---------------------------------------------------------------- #
+    # Helpers
 
     def _bytes_to_guid(self, data: bytes) -> str:
         """
