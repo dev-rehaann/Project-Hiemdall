@@ -239,7 +239,6 @@ Honestly this project forced me to learn things I never would have touched in a 
 | pip installing to user instead of venv | `pip install` went global despite venv being active | Used `venv\Scripts\python.exe -m pip install` explicitly |
 | yara-python build failure on Windows | YARA requires MSVC build tools | Made YARA optional — tool detects if it's installed and skips gracefully |
 | `datetime.UTC` attribute error | Python 3.11 compatibility issue | Replaced with `timezone.utc` from `datetime` module |
-| Copy-paste method truncation | Long files got cut off mid-method during paste | Verified file completeness with `type filename.py` before running |
 
 ---
 
