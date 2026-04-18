@@ -33,9 +33,9 @@ The idea came from a simple question: *what does a skilled attacker do after the
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    PERSISTENT THREAT HUNTER                      │
+│                    PERSISTENT THREAT HUNTER                     │
 ├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
+│                                                                 │
 │  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐       │
 │  │   FIRMWARE   │    │  ANTI-FOREN- │    │  CORRELATION │       │
 │  │   MODULE     │    │  SICS MODULE │    │   ENGINE     │       │
